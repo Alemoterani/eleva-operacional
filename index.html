@@ -13,7 +13,7 @@
             font-family: 'Oswald', sans-serif;
             background-color: #000;
             color: white;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Evita barra de rolagem horizontal indesejada */
         }
         
         .hero {
@@ -71,21 +71,60 @@
             50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
+
+        /* Estilos customizados para o menu mobile (overlay e animação) */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 70%; /* Largura do menu lateral no mobile */
+            background-color: #1a202c; /* Cor do fundo do menu */
+            transform: translateX(100%); /* Esconde o menu para fora da tela */
+            transition: transform 0.3s ease-out; /* Animação de deslize */
+            z-index: 1000; /* Garante que o menu fique por cima de tudo */
+            display: flex;
+            flex-direction: column;
+            padding-top: 6rem; /* Espaço para o botão de fechar */
+            overflow-y: auto; /* Permite rolagem se o menu for muito longo */
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0); /* Mostra o menu */
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo escurecido */
+            z-index: 999; /* Fica abaixo do menu, mas acima do conteúdo */
+            display: none; /* Escondido por padrão */
+        }
+
+        .mobile-menu-overlay.active {
+            display: block; /* Mostra o overlay */
+        }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
     <section class="hero relative flex items-center justify-center text-center px-4">
         <div class="absolute top-0 left-0 right-0 py-4 px-6 flex justify-between items-center">
             <div class="text-2xl title-font text-red-600">ELEVA OPERACIONAL</div>
+            
             <div class="hidden md:flex space-x-6">
                 <a href="#sobre" class="hover:text-red-600">SOBRE</a>
                 <a href="#conteudo" class="hover:text-red-600">CONTEÚDO</a>
                 <a href="#depoimentos" class="hover:text-red-600">DEPOIMENTOS</a>
                 <a href="#garantia" class="hover:text-red-600">GARANTIA</a>
             </div>
+            
             <div class="md:hidden">
-                <i class="fas fa-bars text-2xl"></i>
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
             </div>
         </div>
         
@@ -112,7 +151,20 @@
         </div>
     </section>
     
-    <!-- Sobre Section -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
+
+    <div id="mobile-menu" class="mobile-menu hidden md:hidden">
+        <button id="close-mobile-menu" class="absolute top-4 right-6 text-white text-3xl focus:outline-none">
+            <i class="fas fa-times"></i>
+        </button>
+        <nav class="flex flex-col space-y-8 text-center w-full">
+            <a href="#sobre" class="text-2xl text-white hover:text-red-600 mobile-nav-link">SOBRE</a>
+            <a href="#conteudo" class="text-2xl text-white hover:text-red-600 mobile-nav-link">CONTEÚDO</a>
+            <a href="#depoimentos" class="text-2xl text-white hover:text-red-600 mobile-nav-link">DEPOIMENTOS</a>
+            <a href="#garantia" class="text-2xl text-white hover:text-red-600 mobile-nav-link">GARANTIA</a>
+        </nav>
+    </div>
+
     <section id="sobre" class="py-20 px-4 bg-gray-900">
         <div class="max-w-6xl mx-auto">
             <h2 class="title-font text-4xl md:text-5xl mb-12 text-center">
@@ -147,7 +199,6 @@
         </div>
     </section>
     
-    <!-- Conteúdo Section -->
     <section id="conteudo" class="py-20 px-4 bg-black">
         <div class="max-w-6xl mx-auto">
             <h2 class="title-font text-4xl md:text-5xl mb-12 text-center">
@@ -220,7 +271,6 @@
         </div>
     </section>
     
-    <!-- Depoimentos Section -->
     <section id="depoimentos" class="py-20 px-4 bg-gray-900">
         <div class="max-w-6xl mx-auto">
             <h2 class="title-font text-4xl md:text-5xl mb-12 text-center">
@@ -285,7 +335,6 @@
         </div>
     </section>
     
-    <!-- Garantia Section -->
     <section id="garantia" class="py-20 px-4 bg-black">
         <div class="max-w-6xl mx-auto">
             <div class="bg-gray-900 rounded-lg p-8 md:p-12 border border-red-600">
@@ -336,7 +385,6 @@
         </div>
     </section>
     
-    <!-- FAQ Section -->
     <section class="py-20 px-4 bg-gray-900">
         <div class="max-w-4xl mx-auto">
             <h2 class="title-font text-4xl md:text-5xl mb-12 text-center">
@@ -344,7 +392,7 @@
             </h2>
             
             <div class="space-y-4">
-                <div class="bg-black p-6 rounded-lg">
+                <div class="bg-black p-6 rounded-lg faq-item">
                     <div class="flex justify-between items-center cursor-pointer">
                         <h3 class="text-xl font-bold">Como recebo acesso ao curso?</h3>
                         <i class="fas fa-chevron-down"></i>
@@ -352,7 +400,7 @@
                     <p class="mt-4">Imediatamente após a confirmação do pagamento, você receberá um e-mail com login e senha para acessar nossa plataforma exclusiva de alunos.</p>
                 </div>
                 
-                <div class="bg-black p-6 rounded-lg">
+                <div class="bg-black p-6 rounded-lg faq-item">
                     <div class="flex justify-between items-center cursor-pointer">
                         <h3 class="text-xl font-bold">Por quanto tempo tenho acesso?</h3>
                         <i class="fas fa-chevron-down"></i>
@@ -360,7 +408,7 @@
                     <p class="mt-4">O módulo de ensino Básico tem duração de 6 meses, acompanhando o Curso de Formação de Soldados.</p>
                 </div>
                 
-                <div class="bg-black p-6 rounded-lg">
+                <div class="bg-black p-6 rounded-lg faq-item">
                     <div class="flex justify-between items-center cursor-pointer">
                         <h3 class="text-xl font-bold">O curso serve para qual concurso?</h3>
                         <i class="fas fa-chevron-down"></i>
@@ -368,7 +416,7 @@
                     <p class="mt-4">Nosso conteúdo é dedicado ao módulo de ensino Básico do Curso de Formação de Soldados, preparando o polícial nas matérias presentes no curso e garantindo uma boa classificação para escolha das vagas no próximo módulo.</p>
                 </div>
                 
-                <div class="bg-black p-6 rounded-lg">
+                <div class="bg-black p-6 rounded-lg faq-item">
                     <div class="flex justify-between items-center cursor-pointer">
                         <h3 class="text-xl font-bold">Posso pagar no cartão?</h3>
                         <i class="fas fa-chevron-down"></i>
@@ -381,7 +429,6 @@
         </div>
     </section>
     
-    <!-- Final CTA -->
     <section class="py-20 px-4 bg-black text-center">
         <div class="max-w-4xl mx-auto">
             <h2 class="title-font text-4xl md:text-5xl mb-6">
@@ -406,10 +453,10 @@
     </section>
     
     <script>
-        // Simple FAQ toggle functionality
-        document.querySelectorAll('.bg-black.rounded-lg div.flex').forEach(item => {
+        // Funcionalidade de toggle para FAQ
+        document.querySelectorAll('.faq-item div.flex').forEach(item => {
             item.addEventListener('click', () => {
-                const answer = item.nextElementSibling;
+                const answer = item.nextElementSibling; // É o parágrafo <p>
                 const icon = item.querySelector('i');
                 
                 if (answer.style.display === 'none' || !answer.style.display) {
@@ -424,11 +471,46 @@
             });
         });
         
-        // Make all buy buttons redirect to payment page
-        document.querySelectorAll('a[href="#"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.href = "https://pay.kiwify.com.br/1rHiu7C";
+        // Garante que as respostas do FAQ estejam inicialmente ocultas (para JS controlar)
+        document.querySelectorAll('.faq-item p').forEach(p => {
+            p.style.display = 'none';
+        });
+
+
+        // Funcionalidade do Menu Mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link'); // Links dentro do menu mobile
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('active'); // Ativa/desativa a animação de deslize
+            mobileMenuOverlay.classList.toggle('active'); // Ativa/desativa o overlay escuro
+            
+            // Garante que o menu esteja visível (flex) ou oculto (hidden)
+            if (mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                document.body.style.overflow = 'hidden'; // Impede rolagem do conteúdo principal
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                document.body.style.overflow = 'auto'; // Restaura rolagem do conteúdo principal
+            }
+        }
+
+        // Event Listeners para abrir/fechar o menu
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        closeMobileMenuButton.addEventListener('click', toggleMobileMenu);
+        mobileMenuOverlay.addEventListener('click', toggleMobileMenu); // Fechar ao clicar no overlay
+
+        // Fechar o menu mobile quando um link é clicado (para rolar para a seção)
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileMenu.classList.contains('active')) {
+                    toggleMobileMenu(); // Fecha o menu
+                }
             });
         });
     </script>
